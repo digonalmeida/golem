@@ -4,6 +4,9 @@
 [Bb]uild/
 [Bb]uilds/
 Assets/AssetStoreTools*
+.idea/
+JetBrains/
+JetBrains.meta
 
 # Visual Studio cache directory
 .vs/

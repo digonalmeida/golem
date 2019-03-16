@@ -21,7 +21,7 @@ public class HandBehaviour : MonoBehaviour
     private CharacterAttackController player;
     private Vector3 startPosition;
     private Vector3 distanceTravelled;
-    private float maxDistance = 10f;
+    private float maxDistance = 5.0f;
     private Vector3 direction;
     private HandCollider handCollider;
 
@@ -29,8 +29,9 @@ public class HandBehaviour : MonoBehaviour
     {
         player = p;
         startPosition = player.transform.position;
+        transform.position = player.transform.position;
         currentState = HandStates.Going;
-        direction = player.transform.forward;
+        direction = (player.transform.forward + player.transform.up).normalized;
     }
 
     private void Start()
@@ -60,7 +61,7 @@ public class HandBehaviour : MonoBehaviour
         transform.position += deltaPos;
         deltaPos = deltaPos.normalized;
         DirectionToCollider(ref deltaPos);
-        if (Vector3.Distance(startPosition, transform.position) >= 10)
+        if (Vector3.Distance(startPosition, transform.position) >= maxDistance)
         {
             currentState = HandStates.Waiting;
         }

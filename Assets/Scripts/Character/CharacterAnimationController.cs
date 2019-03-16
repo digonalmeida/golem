@@ -29,6 +29,10 @@ public class CharacterAnimationController : MonoBehaviour {
 	
 	private void LateUpdate()
     {
+        if (animator == null)
+        {
+            return;
+        }
         animator.SetBool(runningAnimationParam, movementController.MovementForce.sqrMagnitude > 0);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class CharacterAttackController : MonoBehaviour
     private HandBehaviour instantiatedHand;
     public GameObject hand;
     public Transform handPosition;
+
+    public event Action<HandBehaviour> OnHandInstantiated;
 
     void Start ()
     {
@@ -24,7 +27,7 @@ public class CharacterAttackController : MonoBehaviour
 
     private void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetButtonDown("Fire1"))
         {
             if (instantiatedHand == null)
             {
@@ -53,5 +56,15 @@ public class CharacterAttackController : MonoBehaviour
         instantiatedHand = go.GetComponent<HandBehaviour>();
         CharacterAttackController cA = this;
         instantiatedHand.Initialize(ref cA);
+        NotifyHandInstantiated(instantiatedHand);
     }
+
+    private void NotifyHandInstantiated(HandBehaviour handBehaviour)
+    {
+        if (OnHandInstantiated != null)
+        {
+            OnHandInstantiated.Invoke(handBehaviour);
+        }
+    }
+    
 }

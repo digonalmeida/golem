@@ -42,6 +42,7 @@ public class CharacterMovementController : MonoBehaviour
     private float turningRateRad = 12.0f;
 
     private bool canJump = true;
+    public bool IgnoreGravityThisFrame = false;
     private CharacterController characterController;
     private Vector3 movementForce = Vector3.zero;
     private Vector3 gravityForce = Vector3.zero;
@@ -49,13 +50,11 @@ public class CharacterMovementController : MonoBehaviour
     private Vector3 externalForce = Vector3.zero;
     
 
-    public void AddForce(Vector3 f)
+    public void Move(Vector3 velocity)
     {
-
-        movementForce.x = f.x;
-        movementForce.z = f.z;
-        gravityForce.y = f.y;
+        externalForce += velocity;
     }
+    
 
     public Vector3 MovementForce
     {
@@ -64,17 +63,21 @@ public class CharacterMovementController : MonoBehaviour
             return movementForce;
         }
     }
+    
+ 
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
     }
 
+   
+    
     private void Update()
     {
         UpdateMovementForce();
         UpdateGravityForce();
-
-        velocity = movementForce + gravityForce;
+        
+        velocity = movementForce + gravityForce + externalForce;
         Vector3 motion = velocity * Time.deltaTime;
         characterController.Move(motion);
 
@@ -82,6 +85,8 @@ public class CharacterMovementController : MonoBehaviour
         {
             transform.forward = Vector3.RotateTowards(transform.forward, movementDirection.normalized, turningRateRad * Time.deltaTime, 1);
         }
+
+        externalForce = Vector3.zero;
     }
 
     private void UpdateMovementForce()
@@ -105,6 +110,13 @@ public class CharacterMovementController : MonoBehaviour
 
     private void UpdateGravityForce()
     {
+        if (IgnoreGravityThisFrame)
+        {
+            canJump = false;
+            gravityForce = Vector3.zero;
+            IgnoreGravityThisFrame = false;
+            return;
+        }
         if(characterController.isGrounded && gravityForce.y <= 0)
         {
             gravityForce = Vector3.zero;
