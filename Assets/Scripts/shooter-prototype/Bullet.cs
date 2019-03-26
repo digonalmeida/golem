@@ -11,5 +11,6 @@ public class Bullet : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.velocity = shotData.Velocity;
+        Destroy(gameObject, 0.5f);
     }
 }
