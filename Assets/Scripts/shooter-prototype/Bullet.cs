@@ -11,6 +11,23 @@ public class Bullet : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.velocity = shotData.Velocity;
+        transform.forward = shotData.Velocity.normalized;
         Destroy(gameObject, 0.5f);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("trigger " + other.name);
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        var adsBlock = other.collider.GetComponent<AdsBlock>();
+        if (adsBlock != null)
+        {
+            adsBlock.TakeHit();
+        }
+        
+        Destroy(gameObject);
     }
 }

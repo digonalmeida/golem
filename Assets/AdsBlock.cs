@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class AdsBlock : MonoBehaviour
 {
+    [SerializeField] 
+    private Renderer _renderer;
+    
     private float _life = 1;
 
     private void Start()
@@ -12,7 +15,7 @@ public class AdsBlock : MonoBehaviour
         UpdateColor();
     }
     
-    private void TakeHit()
+    public void TakeHit()
     {
         _life-=0.25f;
         if (_life <= 0)
@@ -26,7 +29,7 @@ public class AdsBlock : MonoBehaviour
 
     private void UpdateColor()
     {
-        GetComponent<Renderer>().material.color = new Color(1, _life, _life);
+        _renderer.material.color = new Color(1, _life, _life);
     }
     
     
