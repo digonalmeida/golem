@@ -7,20 +7,27 @@ public class AdsBlock : MonoBehaviour
 {
     [SerializeField] 
     private Renderer _renderer;
-    
+
+    private Collider _collider;
     private float _life = 1;
 
     private void Start()
     {
+        _collider = GetComponent<Collider>();
         UpdateColor();
     }
     
     public void TakeHit()
     {
+        if(_life <= 0)
+        {
+            return;
+        }
+
         _life-=0.25f;
         if (_life <= 0)
         {
-            Destroy(gameObject);
+            StartCoroutine(RespawnCoroutine());
             return;
         }
         
@@ -29,9 +36,20 @@ public class AdsBlock : MonoBehaviour
 
     private void UpdateColor()
     {
-        _renderer.material.color = new Color(1, _life, _life);
+        float gray = 0.5f - ((1-_life) * 0.5f);
+        float red = 0.5f + ((1-_life) * 0.5f);
+        _renderer.material.color = new Color(red, gray, gray);
     }
     
+    private IEnumerator RespawnCoroutine()
+    {
+        _collider.enabled = false;
+        _renderer.enabled = false;
+        yield return new WaitForSeconds(Random.Range(1.0f, 2.0f));
+        _collider.enabled = true;
+        _renderer.enabled = true;
+        _life = 1;
+    }
     
     private void OnTriggerEnter(Collider other)
     {
