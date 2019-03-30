@@ -1,6 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Remoting.Lifetime;
 using UnityEngine;
 
 public class AdsBlock : MonoBehaviour
@@ -43,14 +41,25 @@ public class AdsBlock : MonoBehaviour
     
     private IEnumerator RespawnCoroutine()
     {
+        Hide();
+        yield return new WaitForSeconds(Random.Range(1.0f, 2.0f));
+        Show();
+    }
+
+    private void Hide()
+    {
         _collider.enabled = false;
         _renderer.enabled = false;
-        yield return new WaitForSeconds(Random.Range(1.0f, 2.0f));
+    }
+
+    private void Show()
+    {
         _collider.enabled = true;
         _renderer.enabled = true;
         _life = 1;
+        UpdateColor();
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
         var bullet = other.GetComponent<Bullet>();
