@@ -9,10 +9,16 @@ public class DirectionalUiView : MonoBehaviour
     
     [SerializeField] 
     private float _clampDistance = 30.0f;
-    
+
+    private Vector2 _startPosition;
+
+    public void Start()
+    {
+        _startPosition = transform.position;
+    }
+
     public void Show(Vector2 origin, Vector2 destination)
     {
-        gameObject.SetActive(true);
         transform.position = origin;
         
         _icon.transform.position = GetClampedDestination(origin, destination);
@@ -20,7 +26,8 @@ public class DirectionalUiView : MonoBehaviour
 
     public void Hide()
     {
-        gameObject.SetActive(false);
+        transform.position = _startPosition;
+        _icon.transform.position = _startPosition;
     }
 
     private Vector2 GetClampedDestination(Vector2 origin, Vector2 destination)

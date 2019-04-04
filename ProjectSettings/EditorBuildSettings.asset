@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/shooter-prototype-2.unity
+    path: Assets/Scenes/main.unity
     guid: 34597ba022bb0b042888a0cc29c73bc3
   m_configObjects: {}
