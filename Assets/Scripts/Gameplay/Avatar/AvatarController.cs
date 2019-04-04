@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(AvatarMovementController), typeof(AvatarShooter), typeof(InputController))]
 public class AvatarController : MonoBehaviour
@@ -9,9 +10,20 @@ public class AvatarController : MonoBehaviour
     private AvatarShooter _shooter;
     private AvatarMovementController _movement;
 
+    public static bool Inverted = false;
+
     [SerializeField]
     private float recoilRatio = 1.0f;
 
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void Invert()
+    {
+        Inverted = !Inverted;
+    }
     private void Awake()
     {
         _movement = GetComponent<AvatarMovementController>();

@@ -6,13 +6,22 @@ public class AdsBlock : MonoBehaviour
     [SerializeField] 
     private Renderer _renderer;
 
+    [SerializeField] 
+    private Vector3 _direction = Vector3.zero;
+
+    [SerializeField] 
+    private float _speed = 1.0f;
+
     private Collider _collider;
     private float _life = 1;
+    private Vector3 _startPosition;
+
 
     private void Start()
     {
         _collider = GetComponent<Collider>();
         UpdateColor();
+        _startPosition = transform.position;
     }
     
     public void TakeHit()
@@ -54,6 +63,7 @@ public class AdsBlock : MonoBehaviour
 
     private void Show()
     {
+        transform.position = _startPosition;
         _collider.enabled = true;
         _renderer.enabled = true;
         _life = 1;
@@ -70,5 +80,10 @@ public class AdsBlock : MonoBehaviour
 
         TakeHit();
         Destroy(other.gameObject);
+    }
+
+    private void Update()
+    {
+        transform.position += _direction.normalized * _speed * Time.deltaTime;
     }
 }

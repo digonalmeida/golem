@@ -14,6 +14,9 @@ public class AvatarShooter : MonoBehaviour
     [SerializeField]
     private float _shootingInterval = 0.5f;
 
+    [SerializeField]
+    private float _spread = 0.0f;
+
     public bool IsShooting { get; set; }
 
     public delegate void ShotDataDelegate(ShotData shotData);
@@ -26,7 +29,9 @@ public class AvatarShooter : MonoBehaviour
 
     private void Shoot()
     {
-        ShotData shotData = new ShotData(transform.forward * _bulletSpeed);
+
+        var direction = Quaternion.EulerRotation(0, UnityEngine.Random.Range(-_spread, _spread), 0) * transform.forward; 
+        ShotData shotData = new ShotData(direction * _bulletSpeed * (AvatarController.Inverted ? -1 : 1));
 
         var bullet = Instantiate(_bulletPrefab).GetComponent<Bullet>();
         bullet.transform.position = transform.position;
