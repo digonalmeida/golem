@@ -12,6 +12,8 @@ public class AdsBlock : MonoBehaviour
     [SerializeField] 
     private float _speed = 1.0f;
 
+    private AdsBehaviour _adsBehaviour;
+    private AdsState _state;
     private Collider _collider;
     private float _life = 1;
     private Vector3 _startPosition;
