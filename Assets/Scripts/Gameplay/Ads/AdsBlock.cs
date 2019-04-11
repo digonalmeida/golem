@@ -12,8 +12,10 @@ public class AdsBlock : MonoBehaviour
     [SerializeField] 
     private float _speed = 1.0f;
 
-    private AdsBehaviour _adsBehaviour;
-    private AdsState _state;
+    [SerializeField]
+    private bool _isBlinking = true;
+
+    private Color _color;
     private Collider _collider;
     private float _life = 1;
     private Vector3 _startPosition;
@@ -24,6 +26,7 @@ public class AdsBlock : MonoBehaviour
         _collider = GetComponent<Collider>();
         UpdateColor();
         _startPosition = transform.position;
+        _color = _renderer.GetComponent<SpriteRenderer>().color;
     }
     
     public void TakeHit()
@@ -86,6 +89,40 @@ public class AdsBlock : MonoBehaviour
 
     private void Update()
     {
+        Blink();
+        Movement();
+    }
+
+    private void Movement()
+    {
         transform.position += _direction.normalized * _speed * Time.deltaTime;
+    }
+
+    private void Blink()
+    {
+        float time = 0f;
+        float timeLimit = 5f;
+        float timeInState = 0f;
+        bool off = false;
+
+        while (time < timeLimit)
+        {
+            time += Time.deltaTime;
+            timeInState += Time.deltaTime;
+            if(timeInState > 0.5f)
+            {
+                if (off)
+                {
+                    _renderer.GetComponent<SpriteRenderer>().color = _color;
+                    off = false;
+                }
+                else
+                {
+                    _renderer.GetComponent<SpriteRenderer>().color = Color.black;
+                    off = true;
+                }
+                timeInState = 0;
+            }
+        }
     }
 }
